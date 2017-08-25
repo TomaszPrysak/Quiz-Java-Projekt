@@ -15,6 +15,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
@@ -27,10 +28,13 @@ public class LoginController {
     private TextField tf_imie;
 
     @FXML
-    private PasswordField tf_nazwisko;
+    private TextField tf_nazwisko;
 
     @FXML
     private Button btn_login;
+    
+    @FXML
+    private Button btn_gra;
     
     @FXML
     private CheckBox cb_db;
@@ -46,6 +50,9 @@ public class LoginController {
     
     @FXML
     private CheckBox cb_spring;
+    
+    @FXML
+    private Spinner<?> sp_ip;
     
     @FXML
     private VBox zakresPytan;
@@ -64,6 +71,7 @@ public class LoginController {
     	if(rs.next()){
     		
     		zakresPytan.setDisable(false);
+    		btn_gra.setDisable(false);
     		
     	}else{
     		Alert a = new Alert(AlertType.WARNING);
