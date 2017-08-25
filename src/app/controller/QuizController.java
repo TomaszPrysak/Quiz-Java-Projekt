@@ -51,32 +51,30 @@ public class QuizController {
 
     @FXML
     private Label nr_pyt;
-
-    public static DBConnector db;
     
-    static int num_click = 1;
+    static int num_click_and_num_next_pyt = 1; // deklaracja i inicjalizacja zmiennej w któr¹ bêdziemy u¿ywaæ do przechowywania iloœci klikniêæ przycisku "Next" - przejœcie do nastêpnego pytania, ustawiona na pocz¹tku na 1 poniewa¿ odpalenie quizu od razu nam wyœwietla pierwsze pytanie
     
-    static int num_next_pyt = num_click; // zmienna do przechowywania numery kolejnego pytania
-    
-	public static int click(){
+	public static int click(){ // metoda która zwiêksza wartoœæ zmiennej przchowuj¹cej iloœæ klikniêæ
 		
-		return num_click++;
+		return num_click_and_num_next_pyt++; // zwraca aktualn¹ iloœæ klikniêæ
 	
 	}
 	
-	static int correct_answer = 0;
+	static int correct_answer = 0; // deklaracja i inicklaizacja zmienej w której bêdziemy przechowywaæ iloœæ poprawnych odpowiedzi udzielonych w quizie
 	
-	public void check_correct() throws ClassNotFoundException, SQLException{
+	public void check_correct() throws ClassNotFoundException, SQLException{ // metoda w ktrórej sprawdzamy czy u¿ytkownik udzieli³ poprawnej odpowiedzi na aktualnie wyœwietlane 
 
-		db = new DBConnector();
+		db = new DBConnector(); 
 		Connection conn1 = db.Connection();
     	Statement stat = conn1.createStatement();
-    	ResultSet rs1 = stat.executeQuery("select * from questions where id_q = " + los_pyt + ";");
-		rs1.next();
+    	ResultSet rs1 = stat.executeQuery("select * from questions where id_q = " + los_pyt + ";"); // zapytanie do bazy aby dostaæ dane dotycz¹cego konkretnego pytania
+		rs1.next(); //
 		
-		String correct = rs1.getString("odp");
+		String correct = rs1.getString("odp"); // przypisanie do zmiennej prawid³owej odpowiedzi na konkretne pytanie
     	
-		String user_choice = "";
+		String user_choice = ""; // deklaracja i inicjalizacja zmiennej w której bêdziemy przechowywaæ udzielon¹ odpowiedz u¿ytkownika
+		
+		// poni¿ej sprawdzenie który radiobutton wybra³ u¿ytkownik i przypisanie odpowiedzi do zmiennej user_choice
 		
 		if(rb_A.isSelected()){
 			user_choice = "a";
@@ -88,6 +86,8 @@ public class QuizController {
 			user_choice = "d";
 		}
 		
+		// poni¿ej sprawdzenie czy wybór uzytkownika jest taki sam jak prawid³owa odpowiedz, je¿eli tak to zwiêkszamy nasza zmienna przechowuj¹c¹ ilosæ poprawnych odpowiedzi u¿ytkownika
+		
 		if(user_choice.equals(correct)){
 			correct_answer++;
 			
@@ -96,13 +96,13 @@ public class QuizController {
 	}
     
     @FXML
-    void nextAction(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
+    void nextAction(ActionEvent event) throws IOException, SQLException, ClassNotFoundException { // metoda do obs³ugi zdarzen w momencie nacisniecia przycisku "Next"
     	
-    	check_correct();
+    	check_correct(); // po klikniêciu przycisku uruchamiana jest metora która sprawdza czy udzielona odpowiedz na poprzednie pytanie jest prawid³owa
     	
-    	if(click() != LoginController.qty){
+    	if(click() != LoginController.qty_question){ // sprawdzenie czy iloœæ klikniêæ w przycisk Next jest rózna od ca³kowitej iloœci pytañ, w ten sposób sprawdzamy czy mamy wyœweitliæ kolejne pytanie, sprwdzenie odbywa siê poprzez prównanie iloœci wybranych pytañ przerz u¿ytkownika oraz iloœci klikniêæ przycisku Next co symblizuje iloœæ udzielonych opowiedzi na dotychczasowe
     		
-    		nr_pyt.setText(String.valueOf(num_click));
+    		nr_pyt.setText(String.valueOf(num_click_and_num_next_pyt)); // ustawienie na labelu numeru aktualnego pytania
     		
     		db = new DBConnector();
     		
@@ -110,21 +110,26 @@ public class QuizController {
     		
         	Connection conn1 = db.Connection();
         	Statement stat = conn1.createStatement();
-        	
-        	ResultSet rs1 = stat.executeQuery("select count(id_q) from questions;");
+        	ResultSet rs1 = stat.executeQuery("select count(id_q) from questions;"); // zapytanie do bazy danych w celu sprawdzenia iloœci wszystkich pytañ
         	rs1.next();
-        	int ilosc_pyt = rs1.getInt(1);
         	
-        	los_pyt = gen.nextInt(ilosc_pyt);
+        	int ilosc_pyt = rs1.getInt(1); // przypisujemy do zmiennej wynik zapytania powy¿szego
         	
-        	ResultSet rs2 = stat.executeQuery("select * from questions where id_q = " + los_pyt + ";");
+        	los_pyt = gen.nextInt(ilosc_pyt); // losujemy liczbê z zakresu od 1 do iloœci wszystkich pytañ wystêpuj¹cych w bazie danych
+        	
+        	ResultSet rs2 = stat.executeQuery("select * from questions where id_q = " + los_pyt + ";"); // zapytanie do bazy w celu odszukania pytania o numerze wylosowanym przez generator
         	rs2.next();
-        	lb_pyt.setText(rs2.getString("tresc"));
-    	    rb_A.setText(rs2.getString("a"));
-    	    rb_B.setText(rs2.getString("b"));
-    	    rb_C.setText(rs2.getString("c"));
-    	    rb_D.setText(rs2.getString("d"));
+        	
+        	lb_pyt.setText(rs2.getString("tresc")); // wyœwietlenie treœci wylosowanego pytania
+    	    rb_A.setText(rs2.getString("a")); // wyœwietlenie mo¿liwej odpowiedzi a na wyklosowane pytanie
+    	    rb_B.setText(rs2.getString("b")); // wyœwietlenie mo¿liwej odpowiedzi b na wyklosowane pytanie
+    	    rb_C.setText(rs2.getString("c")); // wyœwietlenie mo¿liwej odpowiedzi c na wyklosowane pytanie
+    	    rb_D.setText(rs2.getString("d")); // wyœwietlenie mo¿liwej odpowiedzi d na wyklosowane pytanie
+    	    
     	} else {
+    		
+    		// w momencie kiedy iloœæ klikniêæ w przycisk jest równa iloœci wybranych pytañ, uruchamiamy wówczas widok z wynikami i uruchamiamy ResultController
+    		
     		Stage stageResult = new Stage();
     		Parent parent = (Parent) FXMLLoader.load(getClass().getResource("/app/view/ResultView.fxml"));
     		Scene sceneResult = new Scene(parent);
@@ -135,37 +140,38 @@ public class QuizController {
     	}
     }
     
-    static int los_pyt;
+    static int los_pyt; // deklarujemy zmienn¹ w której bêdziemy przechowywaæ wylosowane pytanie przez generator
+    
+    public static DBConnector db;
     
 	@FXML
-	void initialize() throws SQLException, ClassNotFoundException, IOException{
+	void initialize() throws SQLException, ClassNotFoundException, IOException{ // metoda pocz¹tkowa uruchamiana tylko raz w momencie startu widoku QuizView i od razu bêdzie nam pokazywaæ pierwsze pytanie
 		
 		db = new DBConnector();
 		
-		Random gen = new Random();
+		Random gen = new Random(); // tworzymy obiekt klasy Random do losowania pytañ z bazy danych
 		
     	Connection conn1 = db.Connection();
     	Statement stat = conn1.createStatement();
-    	
-    	ResultSet rs1 = stat.executeQuery("select count(id_q) from questions;");
-    	
+    	ResultSet rs1 = stat.executeQuery("select count(id_q) from questions;"); // zapytanie do bazy danych w celu sprawdzenia iloœci wszystkich pytañ
     	rs1.next();
     	
-    	int ilosc_pyt = rs1.getInt(1);
+    	int ilosc_pyt = rs1.getInt(1); // przypisujemy do zmiennej wynik zapytania powy¿szego
     	
-    	los_pyt = gen.nextInt(ilosc_pyt + 1);
+    	los_pyt = gen.nextInt(ilosc_pyt + 1); // losujemy liczbê z zakresu od 1 do iloœci wszystkich pytañ wystêpuj¹cych w bazie danych
     	
-    	ResultSet rs2 = stat.executeQuery("select * from questions where id_q = " + los_pyt + ";");
+    	ResultSet rs2 = stat.executeQuery("select * from questions where id_q = " + los_pyt + ";"); // zapytanie do bazy w celu odszukania pytania o numerze wylosowanym przez generator
     	rs2.next();
-    	lb_pyt.setText(rs2.getString("tresc"));
-	    rb_A.setText(rs2.getString("a"));
-	    rb_B.setText(rs2.getString("b"));
-	    rb_C.setText(rs2.getString("c"));
-	    rb_D.setText(rs2.getString("d"));
-
-    	sum_pyt.setText(String.valueOf(LoginController.qty));
     	
-    	nr_pyt.setText(String.valueOf(num_next_pyt));
+    	lb_pyt.setText(rs2.getString("tresc")); // wyœwietlenie treœci wylosowanego pytania
+	    rb_A.setText(rs2.getString("a")); // wyœwietlenie mo¿liwej odpowiedzi a na wyklosowane pytanie
+	    rb_B.setText(rs2.getString("b")); // wyœwietlenie mo¿liwej odpowiedzi b na wyklosowane pytanie
+	    rb_C.setText(rs2.getString("c")); // wyœwietlenie mo¿liwej odpowiedzi c na wyklosowane pytanie
+	    rb_D.setText(rs2.getString("d")); // wyœwietlenie mo¿liwej odpowiedzi d na wyklosowane pytanie
+
+    	sum_pyt.setText(String.valueOf(LoginController.qty_question)); // ustawienie na labelu iloœci wszyskich pytañ
+    	
+    	nr_pyt.setText(String.valueOf(num_click_and_num_next_pyt)); // ustawienie na labelu numer aktualnego pytania
     	
     	
 	

@@ -67,3 +67,7 @@ select count(kat) from questions where kat = 'python';
 select count(kat) from questions where kat = 'python' or kat = 'java';
 
 select * from questions where id_q = 1;
+
+select sum(res) from result group by id_user having id_user = '1';
+
+select count(id_user) from result group by id_user having id_user = '1';
