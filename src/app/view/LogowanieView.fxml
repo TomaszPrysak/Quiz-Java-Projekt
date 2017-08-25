@@ -37,7 +37,7 @@
       </Label>
       <Spinner fx:id="sp_ip" disable="true" layoutX="162.0" layoutY="335.0" />
       <Label fx:id="lb_sp" disable="true" layoutX="162.0" layoutY="312.0" text="Liczba pytań" />
-      <Button fx:id="btn_gra" disable="true" layoutX="112.0" layoutY="398.0" mnemonicParsing="false" onAction="#graAction" prefHeight="36.0" prefWidth="100.0" text="Gramy!">
+      <Button fx:id="btn_gra" disable="true" layoutX="112.0" layoutY="398.0" mnemonicParsing="false" onMouseClicked="#graAction" prefHeight="36.0" prefWidth="100.0" text="Gramy!">
          <font>
             <Font size="18.0" />
          </font>

@@ -66,16 +66,10 @@ public class LoginController {
     public DBConnector db;
 	
     @FXML
-    void loginAction(MouseEvent event) throws ClassNotFoundException, SQLException, IOException {
-    	
-    	System.out.println("test");
-    	
+    void loginAction(MouseEvent event) throws ClassNotFoundException, SQLException, IOException {	
     	Connection conn1 = db.Connection();
-    	
     	Statement stat = conn1.createStatement();
-    	
     	ResultSet rs = stat.executeQuery("select * from users where imie = '" + tf_imie.getText() + "' and nazwisko = '" + tf_nazwisko.getText() + "';");
-    	
     	if(rs.next()){
     		zakresPytan.setDisable(false);
     		btn_gra.setDisable(false);
@@ -88,16 +82,32 @@ public class LoginController {
     		a.setHeaderText("UWAGA!");
     		a.showAndWait();
     	}
-    	
     }
+    
     Boolean db_sel= false;
+    Boolean python_sel = false;
+    Boolean fe_sel= false;
+    Boolean java_sel = false;
+    Boolean spring_sel = false;
+    
     @FXML
     void graAction(MouseEvent event) throws ClassNotFoundException, IOException {
-    	
     	if(cb_db.isSelected()){
     		db_sel = true;
     	}
-    	
+    	if(cb_python.isSelected()){
+    		python_sel = true;
+    	}
+    	if(cb_fe.isSelected()){
+    		fe_sel = true;
+    	}
+    	if(cb_java.isSelected()){
+    		java_sel = true;
+    	}
+    	if(cb_spring.isSelected()){
+    		spring_sel = true;
+    	}
+
 		Stage stageGame = new Stage();
 		Parent parent = (Parent) FXMLLoader.load(getClass().getResource("/app/view/QuizView.fxml"));
 		Scene sceneGame = new Scene(parent);
@@ -105,7 +115,6 @@ public class LoginController {
 		stageGame.setTitle("QuizView");
 		stageGame.setResizable(false);
 		stageGame.show();
-    	
 	}
     
     public void initialize(){
