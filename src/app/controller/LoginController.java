@@ -50,8 +50,7 @@ public class LoginController {
     @FXML
     private VBox zakresPytan;
     
-    public DBConnector;
-    String logowanie;
+    public DBConnector db;
 	
     @FXML
     void loginAction(MouseEvent event) throws ClassNotFoundException, SQLException, IOException {
@@ -63,8 +62,6 @@ public class LoginController {
     	ResultSet rs = stat.executeQuery("select * from users where imie = '" + tf_imie.getText() + "' and nazwisko = '" + tf_nazwisko.getText() + "';");
     
     	if(rs.next()){
-    		
-    		System.out.println(logowanie);
     		
     		zakresPytan.setDisable(false);
     		
@@ -84,11 +81,15 @@ public class LoginController {
 		Stage stageGame = new Stage();
 		Parent parent = (Parent) FXMLLoader.load(getClass().getResource("/app/view/DataBaseView.fxml"));
 		Scene sceneDB = new Scene(parent);
-		stageDB.setScene(sceneDB);
-		stageDB.setTitle("DataBaseView");
-		stageDB.setResizable(false);
-		stageDB.show();
+		stageGame.setScene(sceneDB);
+		stageGame.setTitle("DataBaseView");
+		stageGame.setResizable(false);
+		stageGame.show();
     	
 	}
+    
+    public void initialize(){
+    	db = new DBConnector();
+    }
     
 }
