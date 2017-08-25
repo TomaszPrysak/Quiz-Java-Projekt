@@ -19,7 +19,7 @@
       </Label>
       <TextField fx:id="tf_imie" layoutX="87.0" layoutY="79.0" promptText="Podaj imię" />
       <TextField fx:id="tf_nazwisko" layoutX="87.0" layoutY="131.0" promptText="Podaj nazwisko" />
-      <Button fx:id="btn_login" layoutX="103.0" layoutY="184.0" mnemonicParsing="false" onAction="#loginAction" prefHeight="25.0" prefWidth="118.0" text="Loguj" />
+      <Button fx:id="btn_login" layoutX="103.0" layoutY="184.0" mnemonicParsing="false" onMouseClicked="#loginAction" prefHeight="25.0" prefWidth="118.0" text="Loguj" />
       <Separator layoutX="-5.0" layoutY="236.0" prefHeight="4.0" prefWidth="331.0" />
       <VBox fx:id="zakresPytan" disable="true" layoutX="14.0" layoutY="273.0" prefHeight="95.0" prefWidth="100.0">
          <children>
@@ -30,13 +30,13 @@
             <CheckBox fx:id="cb_spring" mnemonicParsing="false" text="Spring" />
          </children>
       </VBox>
-      <Label layoutX="14.0" layoutY="245.0" text="Zakres pytań">
+      <Label fx:id="lb_rb" disable="true" layoutX="14.0" layoutY="245.0" text="Zakres pytań">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
       <Spinner fx:id="sp_ip" disable="true" layoutX="162.0" layoutY="335.0" />
-      <Label layoutX="162.0" layoutY="312.0" text="Liczba pytań" />
+      <Label fx:id="lb_sp" disable="true" layoutX="162.0" layoutY="312.0" text="Liczba pytań" />
       <Button fx:id="btn_gra" disable="true" layoutX="112.0" layoutY="398.0" mnemonicParsing="false" onAction="#graAction" prefHeight="36.0" prefWidth="100.0" text="Gramy!">
          <font>
             <Font size="18.0" />

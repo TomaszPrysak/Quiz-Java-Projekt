@@ -12,12 +12,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.PasswordField;
+import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -55,6 +55,12 @@ public class LoginController {
     private Spinner<?> sp_ip;
     
     @FXML
+    private Label lb_rb;
+    
+    @FXML
+    private Label lb_sp;
+    
+    @FXML
     private VBox zakresPytan;
     
     public DBConnector db;
@@ -62,17 +68,19 @@ public class LoginController {
     @FXML
     void loginAction(MouseEvent event) throws ClassNotFoundException, SQLException, IOException {
     	
+    	System.out.println("test");
+    	
     	Connection conn1 = db.Connection();
     	
     	Statement stat = conn1.createStatement();
     	
     	ResultSet rs = stat.executeQuery("select * from users where imie = '" + tf_imie.getText() + "' and nazwisko = '" + tf_nazwisko.getText() + "';");
-    
+    	
     	if(rs.next()){
-    		
     		zakresPytan.setDisable(false);
     		btn_gra.setDisable(false);
-    		
+    		lb_rb.setDisable(false);
+    		lb_sp.setDisable(false);
     	}else{
     		Alert a = new Alert(AlertType.WARNING);
     		a.setContentText("Poda³eœ b³êdny login lub has³o");
@@ -82,15 +90,19 @@ public class LoginController {
     	}
     	
     }
-    
+    Boolean db_sel= false;
     @FXML
     void graAction(MouseEvent event) throws ClassNotFoundException, IOException {
     	
+    	if(cb_db.isSelected()){
+    		db_sel = true;
+    	}
+    	
 		Stage stageGame = new Stage();
-		Parent parent = (Parent) FXMLLoader.load(getClass().getResource("/app/view/DataBaseView.fxml"));
-		Scene sceneDB = new Scene(parent);
-		stageGame.setScene(sceneDB);
-		stageGame.setTitle("DataBaseView");
+		Parent parent = (Parent) FXMLLoader.load(getClass().getResource("/app/view/QuizView.fxml"));
+		Scene sceneGame = new Scene(parent);
+		stageGame.setScene(sceneGame);
+		stageGame.setTitle("QuizView");
 		stageGame.setResizable(false);
 		stageGame.show();
     	
