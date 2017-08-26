@@ -55,10 +55,6 @@ import javafx.fxml.FXML;
 	    	
 	    	int qty_game_user = rs3.getInt(1);
 	    	
-	    	System.out.println(sum_points_user);
-	    	
-	    	System.out.println(qty_game_user);
-	    	
 	    	String sql = "insert into result (id_user, res) values (" + id_user + ", " + QuizController.correct_answer + ");";
 	    	PreparedStatement ps = conn1.prepareStatement(sql);
 	    	ps.executeUpdate();
