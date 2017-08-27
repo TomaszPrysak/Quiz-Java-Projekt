@@ -107,33 +107,44 @@ public class LoginController {
     @FXML
     void graAction(MouseEvent event) throws ClassNotFoundException, IOException { // metoda do obs³ugi zdarzeñ wykonywanych w momencie klikniêcia przycisku "Graj" w ekranie logowania, jednak przycisk ten jest aktywowany dopiero po wpisaniu prawid³owych danych przez u¿ytkownika (tzn. danych istniej¹cych w bazie danych gry)
     	
-    	qty_question = sp_ip.getValue(); // przypisanie iloœci pytañ do zmiennej - iloœæ pytañ wybrana przez u¿ytkownika za pomoc¹ "okienka"
+    	if(cb_db.isSelected() || cb_python.isSelected() || cb_fe.isSelected() || cb_java.isSelected() || cb_spring.isSelected()){
     	
-    	if(cb_db.isSelected()){ // sprawdza czy zaznaczona jest tematyka database
-    		db_sel = true; // je¿eli tak to ustawia zmienn¹ na true
+	    	qty_question = sp_ip.getValue(); // przypisanie iloœci pytañ do zmiennej - iloœæ pytañ wybrana przez u¿ytkownika za pomoc¹ "okienka"
+	    	
+	    	if(cb_db.isSelected()){ // sprawdza czy zaznaczona jest tematyka database
+	    		db_sel = true; // je¿eli tak to ustawia zmienn¹ na true
+	    	}
+	    	if(cb_python.isSelected()){ // sprawdza czy zaznaczona jest tematyka python
+	    		python_sel = true; // je¿eli tak to ustawia zmienn¹ na true
+	    	}
+	    	if(cb_fe.isSelected()){ // sprawdza czy zaznaczona jest tematyka front end
+	    		fe_sel = true; // je¿eli tak to ustawia zmienn¹ na true
+	    	}
+	    	if(cb_java.isSelected()){ // sprawdza czy zaznaczona jest tematyka java
+	    		java_sel = true; // je¿eli tak to ustawia zmienn¹ na true
+	    	}
+	    	if(cb_spring.isSelected()){ // sprawdza czy zaznaczona jest tematyka spring
+	    		spring_sel = true; // je¿eli tak to ustawia zmienn¹ na true
+	    	}
+	    	
+	    	// nastêpnie uruchamiane jest okienko z pytaniami quizu i jednoczenœnie uruchamiany QuizController
+	    	
+			Stage stageGame = new Stage();
+			Parent parent = (Parent) FXMLLoader.load(getClass().getResource("/app/view/QuizView.fxml"));
+			Scene sceneGame = new Scene(parent);
+			stageGame.setScene(sceneGame);
+			stageGame.setTitle("QuizView");
+			stageGame.setResizable(false);
+			stageGame.show();
+    	}else{
+    		
+    		Alert a = new Alert(AlertType.WARNING);
+    		a.setContentText("Nie wybra³eœ ¿adnej kategori pytañ");
+    		a.setTitle("B³¹d");
+    		a.setHeaderText("UWAGA!");
+    		a.showAndWait();
+    		
     	}
-    	if(cb_python.isSelected()){ // sprawdza czy zaznaczona jest tematyka python
-    		python_sel = true; // je¿eli tak to ustawia zmienn¹ na true
-    	}
-    	if(cb_fe.isSelected()){ // sprawdza czy zaznaczona jest tematyka front end
-    		fe_sel = true; // je¿eli tak to ustawia zmienn¹ na true
-    	}
-    	if(cb_java.isSelected()){ // sprawdza czy zaznaczona jest tematyka java
-    		java_sel = true; // je¿eli tak to ustawia zmienn¹ na true
-    	}
-    	if(cb_spring.isSelected()){ // sprawdza czy zaznaczona jest tematyka spring
-    		spring_sel = true; // je¿eli tak to ustawia zmienn¹ na true
-    	}
-    	
-    	// nastêpnie uruchamiane jest okienko z pytaniami quizu i jednoczenœnie uruchamiany QuizController
-    	
-		Stage stageGame = new Stage();
-		Parent parent = (Parent) FXMLLoader.load(getClass().getResource("/app/view/QuizView.fxml"));
-		Scene sceneGame = new Scene(parent);
-		stageGame.setScene(sceneGame);
-		stageGame.setTitle("QuizView");
-		stageGame.setResizable(false);
-		stageGame.show();
 	}
     
     static int qty_question; // deklaracja zmiennej w któej bêdzie przechowywana iloœæ pytañ wybrana przez u¿ytkownika za pomoc¹ "okienka" w oknie logowania
